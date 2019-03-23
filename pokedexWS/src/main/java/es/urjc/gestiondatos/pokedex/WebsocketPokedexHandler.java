@@ -48,7 +48,7 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler {
 			case "JOIN":
 				break;
 			case "QUERY":
-				String type = node.get("type").asText();
+				String type = node.get("type1").asText();
 				int gen = node.get("gen").asInt();
 				int ord = node.get("ord").asInt();
 				int leg = node.get("leg").asInt();
