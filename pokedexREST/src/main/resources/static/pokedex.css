@@ -1,0 +1,220 @@
+#leftside{
+  display: block;
+  float:left;
+  margin: 100px;
+  margin-left: 50px;
+}
+#rightside{
+  display:block;
+  float:left;
+  margin: 95px;
+  margin-left: 200px;
+}
+
+#screen {
+    width : 250px;
+    height: 250px;
+    background-color : rgb(198, 198, 204);
+    margin-top : 20px;
+    margin-left: 30px;
+    margin-bottom: 50px;
+    border-style: solid;
+    border-width: 10px;
+    border-color: rgb(126, 12, 12);
+}
+
+#options{
+  display:block;
+  margin-bottom: 20px;
+}
+#description{
+  display: block;
+  float: bottom;
+  background-color : white;
+  width : 250px;
+  height : 250px;
+  margin-left: 30px;
+  border-style: solid;
+  border-width: 10px;
+  border-color: rgb(126, 12, 12);
+}
+#result{
+  background-color:white;
+  width: 400px;
+  height: 250px;
+  border-style: solid;
+  border-width: 10px;
+  border-color: rgb(126, 12, 12);
+}
+.dot{
+  background-color: rgb(75, 72, 236);
+  border-radius: 50%;
+  width: 70px;
+  height:70px;
+  margin-left: 30px;
+  display: block;
+  border-style: solid;
+  border-width: 10px;
+  border-color: rgb(5, 3, 83);
+}
+
+.bluebtn {
+    width : 150px;
+    height : 50px;
+    background-color: rgba(68, 56, 230, 0.884); /* Green */
+    border: none;
+    margin-bottom : 12px;  
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 24px;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+  }
+  .bluebtn:hover {
+    background-color : rgba(52, 40, 216, 0.884);
+  } 
+  .bluebtn:active{
+    background-color : rgba(52, 40, 216, 0.884);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  } 
+
+  .greenbtn{
+    width : 100px;
+    height : 70px;
+    background-color: rgba(47, 197, 59, 0.884); /* Green */
+    border: none;
+    margin-bottom : 12px; 
+    margin-top: 12px; 
+    vertical-align: top;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 24px;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+  }
+  .greenbtn:hover {
+    background-color :  rgba(34, 172, 46, 0.884);
+  } 
+  .greenbtn:active{
+    background-color :  rgba(34, 172, 46, 0.884);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  } 
+  .form{
+    display:block;
+    margin: 20px;
+  }
+
+  /* Nombre de usuario */
+  #username{
+    overflow: hidden;
+    width : 440px;
+    height: 40px;
+    font-family: Arial;
+    background-color : rgb(98, 45, 134);
+    color: white;
+    margin-top : 25px;
+    border-style: solid;
+    border-width: 7px;
+    border-color: rgb(56, 24, 77);
+  }
+
+  #uname{
+    margin-left: 10px;
+    font-family: Helvetica;
+    margin-top: 10px;
+  }
+  /* Fin de nombre de usuario */
+
+  /* Botón de dropdown */
+  .options1 {
+    overflow: hidden;
+    width : 440px;
+    height: 50px;
+    background-color : rgb(134, 85, 45);
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top : 10px;
+    margin-bottom: 20px;
+    border-style: solid;
+    border-width: 7px;
+    border-color: rgb(99, 9, 9);
+  }
+  .options1 a {
+    float: left;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    padding: 12px 14px;
+    text-decoration: none;
+  }
+  .dropdown {
+    float: left;
+    overflow: hidden;
+  }
+  
+  .dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 15px;  
+    border: none;
+    outline: none;
+    color: white;
+    padding: 16px 10px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+  }
+  .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+    background-color: red;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+  .show {
+    display: block;
+  }
+  /* Fin de botón de dropdown */
+
+  /* Número de serie */
+  #n_serie{
+    margin-left: 330px;
+    font-family: Helvetica;
+    color:white;
+    margin-top: 0px;
+  }
+
+  /* Fin del número de serie */
+
+  #legendario{
+    float: left;
+    position: relative;
+    left: 20px;
+    top: 15px;
+    color:rgb(214, 214, 214);
+  }
+  #pokedex {
+    background-image: url("pokedex_bg.png");
+    background-repeat:no-repeat;
+    background-size: 1200px, 900px;
+    width : 1200px;
+    height : 900px;
+    background-color :white;
+    padding : 50px 50px;
+  }

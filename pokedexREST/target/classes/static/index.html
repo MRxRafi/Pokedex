@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+    <script type = "text/javascript" src = "pokedex.js"></script>
+    <script type = "text/javascript" src = "jquery-3.3.1.min.js"></script>
+    <link rel = "stylesheet" href = "pokedex.css">
+    <title>Pokedex</title>
+</head>
+<body onload="getUname()">
+    <div id = "pokedex">
+        <span class="dot"></span>
+        <div id = "leftside">           
+
+            <div id = "screen">
+            </div>
+
+            <div id = "description">
+            </div>
+
+        </div>
+
+        <div id="rightside">
+            <div id="username">
+                    <p id="uname"></p>
+            </div>
+            <div class="options1">
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="bot_func('tipo')"> Tipo 
+                        <!--<i class="fa fa-caret-down"></i> -->
+                    </button>
+                    <div class="dropdown-content" id="tipo">
+                        <a href="#">Todos</a>
+                        <a href="#">Fuego</a>
+                        <a href="#">Agua</a>
+                        <a href="#">Planta</a>
+                        <a href="#">Tierra</a>
+                        <a href="#">Roca</a>
+                        <a href="#">Electrico</a>
+                        <a href="#">Veneno</a>
+                        <a href="#">Bicho</a>
+                        <a href="#">Volador</a>
+                        <a href="#">Lucha</a>
+                        <a href="#">Fantasma</a>
+                        <a href="#">Dragon</a>
+                        <a href="#">Psiquico</a>
+                        <a href="#">Hielo</a>
+                        <a href="#">Hada</a>
+                        <a href="#">Acero</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="bot_func('generacion')"> Generacion 
+                        <i class="fa fa-caret-down"></i></button>
+                    <div class="dropdown-content" id="generacion">
+                        <a href="#">Todas</a>
+                        <a href="#">1ª generación</a>
+                        <a href="#">2ª generación</a>
+                        <a href="#">3ª generación</a>
+                        <a href="#">4ª generación</a>
+                        <a href="#">5ª generación</a>
+                        <a href="#">6ª generación</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="bot_func('ordenar')"> Ordenar
+                        <i class="fa fa-caret-down"></i></button>
+                    <div class="dropdown-content" id="ordenar">
+                        <a href="#">Ninguno</a>
+                        <a href="#">Ascendente</a>
+                        <a href="#">Descendente</a>
+                    </div>
+                </div>
+                <div id = "legendario">
+                    <input type="checkbox" name="legendario" value="isLegendario"> Legendario<br>
+                </div>
+            </div>
+            <div id = "options">
+
+                <button type = "button" class = "bluebtn" id = "search">Search</button>
+                </div>
+
+                <div id = "result">
+                </div>
+
+                <button type = "button" class = "greenbtn" id = "delete">Delete Selected</button>
+                <p id="n_serie"></p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
