@@ -11,6 +11,10 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import org.basex.core.BaseXException;
+import org.basex.core.*;
+import org.basex.core.cmd.*;
+
 public class PokedexController {
 	//Adri
 	MongoClient con = new MongoClient(new ServerAddress("localhost", 27017));
