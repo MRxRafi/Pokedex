@@ -17,7 +17,7 @@ public class App implements WebSocketConfigurer {
 	
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(pokedexHandler(), "/dlabyrinth").setAllowedOrigins("*");
+		registry.addHandler(pokedexHandler(), "/pokedex").setAllowedOrigins("*");
 	}
 
 	@Bean
