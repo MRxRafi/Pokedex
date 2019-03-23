@@ -20,28 +20,3 @@ window.onclick = function(e) {
     }
 
 }
-
-//Cargar XML
-function loadXML(path, callback){
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", path, true);
-    rawFile.onreadystatechange = function () {
-        if (rawFile.readyState === 4) {
-            if (rawFile.status === 200 || rawFile.status == 0) {
-                var xmlDoc = rawFile.responseXML;
-                callback(xmlDoc);
-            }
-        }
-    }
-    rawFile.send(null);
-}
-
-//Cargar XML al HTML (se ejecuta al abrir la pokedex)
-function getUname() {
-    loadXML("pokedex.xml", function(xmlDoc){
-        var username = xmlDoc.getElementsByTagName("usuario")[0].childNodes[0].data;
-        var num_serie = xmlDoc.getElementsByTagName("num_serie")[0].childNodes[0].data;
-        document.getElementById("uname").innerHTML = "Nombre de usuario: " + username;
-        document.getElementById("n_serie").innerHTML = "Pokédex nº: " + num_serie;
-    });
-}
