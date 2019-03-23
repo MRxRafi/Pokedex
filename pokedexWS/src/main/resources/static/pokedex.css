@@ -194,7 +194,7 @@
 
   /* Número de serie */
   #n_serie{
-    margin-left: 330px;
+    margin-left: 290px;
     font-family: Helvetica;
     color:white;
     margin-top: 0px;
@@ -213,7 +213,7 @@
     background-image: url("pokedex_bg.png");
     background-repeat:no-repeat;
     background-size: 1200px, 900px;
-    width : 1200px;
+    width : 1300px;
     height : 900px;
     background-color :white;
     padding : 50px 50px;
