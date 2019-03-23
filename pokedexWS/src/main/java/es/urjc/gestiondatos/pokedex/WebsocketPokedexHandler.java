@@ -45,6 +45,17 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler{
 			//Obj a mandar
 			ObjectNode json = mapper.createObjectNode();
 			
+			switch(node.get("type").asText()) {
+			case "JOIN":
+				break;
+			case "QUERY":
+				String type = node.get("type").asText();
+				int gen = node.get("gen").asInt();
+				int ord = node.get("ord").asInt();
+				boolean leg = node.get("leg").asBoolean();
+				pokedexController.query(type, gen, ord, leg);
+				break;
+			}
 			
 		}
 	}

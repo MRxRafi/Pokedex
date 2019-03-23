@@ -1,11 +1,16 @@
 package es.urjc.gestiondatos.pokedex;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.bson.Document;
+
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 //import com.mongodb.client.MongoDatabase;
 
 public class PokedexServer {
@@ -14,18 +19,16 @@ public class PokedexServer {
 
 		// Parte del cliente
 		MongoClient con = new MongoClient(new ServerAddress("localhost", 27017));
-		DB db = con.getDB("pokedex");
-		DBCollection collection = db.getCollection("pokemon");
+		MongoDatabase db = con.getDatabase("pokedex");
+		MongoCollection<Document> collection = db.getCollection("pokemon");
 
 		BasicDBObject query = new BasicDBObject();
 		query.put("type1", "electric");
 
-		DBObject cursor = collection.findOne(query);
-		System.out.println(cursor);
+		FindIterable<Document> cursor = collection.find(query);
+	     Iterator<Document> it = cursor.iterator();
 
 		con.close();
-		/*
-		 * while(cursor.hasNext()) { System.out.println(cursor.next()); }
-		 */
+		while(it.hasNext()) { System.out.println(it.next()); }
 	}
 }
