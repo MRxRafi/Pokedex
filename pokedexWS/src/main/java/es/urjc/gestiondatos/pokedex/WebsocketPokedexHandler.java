@@ -13,16 +13,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class WebsocketPokedexHandler extends TextWebSocketHandler{
+public class WebsocketPokedexHandler extends TextWebSocketHandler {
 	private static Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<WebSocketSession>());
 	ObjectMapper mapper = new ObjectMapper();
 	boolean debug = true;
 	PokedexController pokedexController = new PokedexController();
-	
 
 	// Invoked after WebSocket negotiation has succeeded and the WebSocket
 	// connection is opened and ready for use.
-	//@Override
+	// @Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		sessions.add(session);
 	}
@@ -31,32 +30,34 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler{
 	// after a transport error has occurred. Although the session may technically
 	// still be open, depending on the underlying implementation, sending messages
 	// at this point is discouraged and most likely will not succeed.
-	//@Override
+	// @Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		sessions.remove(session);
 	}
 
 	// Invoked when a new WebSocket message arrives.
-	//@Override
+	// @Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		synchronized(sessions) {
-			//obj recibido
+		synchronized (sessions) {
+			// obj recibido
 			JsonNode node = mapper.readTree(message.getPayload());
-			//Obj a mandar
+			// Obj a mandar
 			ObjectNode json = mapper.createObjectNode();
-			
-			switch(node.get("type").asText()) {
+
+			switch (node.get("type").asText()) {
 			case "JOIN":
 				break;
 			case "QUERY":
 				String type = node.get("type").asText();
 				int gen = node.get("gen").asInt();
 				int ord = node.get("ord").asInt();
-				boolean leg = node.get("leg").asBoolean();
-				pokedexController.query(type, gen, ord, leg);
+				int leg = node.get("leg").asInt();
+				session.sendMessage(new TextMessage(pokedexController.query(type, gen, ord, leg)));
+				break;
+
+			case "CREATE":
 				break;
 			}
-			
 		}
 	}
 }
