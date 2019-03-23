@@ -46,6 +46,9 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler {
 
 			switch (node.get("type").asText()) {
 			case "JOIN":
+				json.put("type", "CONEX_ESTAB");
+				json.putPOJO("pokedexXML", pokedexController.getPokedexXML());
+				session.sendMessage(new TextMessage(json.toString()));
 				break;
 			case "QUERY":
 				String type = node.get("type1").asText();
