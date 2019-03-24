@@ -1,15 +1,20 @@
 package es.urjc.gestiondatos.pokedex;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.Block;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.util.JSON;
 
 import org.basex.core.BaseXException;
 import org.basex.core.*;
@@ -25,19 +30,31 @@ public class PokedexController {
 	PokedexXML pokXML = new PokedexXML();
 	
 	//Adri
-	public String query(String type, int gen, int ord, int legendary) {
+	@SuppressWarnings("deprecation")
+	public String query(String type1, int gen, int ord, int legendary) {
 		
 		BasicDBObject query = new BasicDBObject();
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		obj.add(new BasicDBObject("type", type));
+		obj.add(new BasicDBObject("type1", type1));
 		obj.add(new BasicDBObject("generation", gen));
 		obj.add(new BasicDBObject("is_legendary", legendary));
 		query.put("$and", obj);
 
-		//FindIterable<Document> cursor = collection.find(query);
-		String cursor = collection.find(query).toString();
-		
-		return cursor;
+		FindIterable<Document> cursor = collection.find(query);
+		String result = "[";
+	    List<Document> listDoc = new ArrayList<>();
+
+	    for (Document doc : cursor) {
+	    	listDoc.add(doc);
+	    }
+	    result = result.replace(result.substring(result.length()-1), "");
+	    result += "]";
+	    
+		return JSON.serialize(listDoc);
+	}
+	
+	public void closeMongoSession() {
+		con.close();
 	}
 	
 	//Rafa

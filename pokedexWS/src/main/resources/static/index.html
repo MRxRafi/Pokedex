@@ -27,10 +27,10 @@
             </div>
             <div class="options1">
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="bot_func('tipo')"> Tipo 
+                    <button class="dropbtn" onclick="bot_func('tipodrop')" id="tipo"> Tipo 
                         <!--<i class="fa fa-caret-down"></i> -->
                     </button>
-                    <div class="dropdown-content" id="tipo">
+                    <div class="dropdown-content" id = "tipodrop">
                         <a href="#">Todos</a>
                         <a href="#">Fuego</a>
                         <a href="#">Agua</a>
@@ -52,9 +52,9 @@
                 </div>
 
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="bot_func('generacion')"> Generacion 
+                    <button class="dropbtn" onclick="bot_func('generaciondrop')" id="generacion"> Generacion 
                         <i class="fa fa-caret-down"></i></button>
-                    <div class="dropdown-content" id="generacion">
+                    <div class="dropdown-content" id ="generaciondrop" >
                         <a href="#">Todas</a>
                         <a href="#">1ª generación</a>
                         <a href="#">2ª generación</a>
@@ -66,9 +66,9 @@
                 </div>
 
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="bot_func('ordenar')"> Ordenar
+                    <button class="dropbtn" onclick="bot_func('ordenardrop')" id="ordenar"> Ordenar
                         <i class="fa fa-caret-down"></i></button>
-                    <div class="dropdown-content" id="ordenar">
+                    <div class="dropdown-content" id = ordenardrop>
                         <a href="#">Ninguno</a>
                         <a href="#">Ascendente</a>
                         <a href="#">Descendente</a>
@@ -80,7 +80,7 @@
             </div>
             <div id = "options">
 
-                <button type = "button" class = "bluebtn" id = "search">Search</button>
+                <button type = "button" class = "bluebtn" id = "search" onclick = "search()">Search</button>
                 </div>
 
                 <div id = "result">

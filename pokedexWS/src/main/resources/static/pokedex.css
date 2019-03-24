@@ -45,6 +45,9 @@
   border-style: solid;
   border-width: 10px;
   border-color: rgb(126, 12, 12);
+  sheight:120px;
+  font:16px/26px Georgia, Garamond, Serif;
+  overflow:auto;
 }
 .dot{
   background-color: rgb(75, 72, 236);

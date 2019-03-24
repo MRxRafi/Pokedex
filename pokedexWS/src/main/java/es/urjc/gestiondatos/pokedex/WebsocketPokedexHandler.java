@@ -55,7 +55,11 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler {
 				int gen = node.get("gen").asInt();
 				int ord = node.get("ord").asInt();
 				int leg = node.get("leg").asInt();
-				session.sendMessage(new TextMessage(pokedexController.query(type, gen, ord, leg)));
+				json.put("type", "RESULT");
+				json.put("result", pokedexController.query(type, gen, ord, leg));
+				TextMessage m = new TextMessage(json.toString());
+				System.out.println(json.toString());
+				session.sendMessage(m);
 				break;
 
 			case "CREATE":

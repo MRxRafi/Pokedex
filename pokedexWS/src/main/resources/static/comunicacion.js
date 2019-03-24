@@ -28,6 +28,14 @@ function openWSConnection(){
 	    		connection.data.pokedexXML = msg.pokedexXML;
 	    		document.getElementById("uname").innerHTML = "Nombre de usuario: " + msg.pokedexXML.usuario;
 	            document.getElementById("n_serie").innerHTML = "Pokedex numero: " + msg.pokedexXML.num_serie;
+	            break;
+	    	case "RESULT":
+	    		//recibimos los pokemon en forma de json (String)
+	    		pokemonJSON = msg.result;
+	    		console.log(pokemonJSON);
+	    		var pokemonJSobj = JSON.parse(pokemonJSON);
+	    		displayResult(pokemonJSobj);
+	    		break;
 	    	case "CONEX_CERR":
 	        	//Cerrar Conexión
 	        	connection.close();
@@ -59,6 +67,20 @@ function waitForSocketConnection(socket, callback){
 
         }, 20); // wait 5 milisecond for the connection...
 }
+
+ //Adri
+function queryWS(type1, gen, ord, leg){
+	connection.data.type = "QUERY"
+	connection.data.type1 = type1
+	connection.data.gen = gen
+	connection.data.ord =ord
+	connection.data.leg = leg
+	connection.send(JSON.stringify(connection.data));
+	console.log('query sent!')
+}
+
+
+
 /*
 function updateStateWS(){
 	connection.data.type = 'UPDATE';

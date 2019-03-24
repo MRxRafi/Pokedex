@@ -45,6 +45,9 @@
   border-style: solid;
   border-width: 10px;
   border-color: rgb(126, 12, 12);
+  sheight:120px;
+  font:16px/26px Georgia, Garamond, Serif;
+  overflow:auto;
 }
 .dot{
   background-color: rgb(75, 72, 236);
@@ -194,7 +197,7 @@
 
   /* Número de serie */
   #n_serie{
-    margin-left: 330px;
+    margin-left: 290px;
     font-family: Helvetica;
     color:white;
     margin-top: 0px;
@@ -213,7 +216,7 @@
     background-image: url("pokedex_bg.png");
     background-repeat:no-repeat;
     background-size: 1200px, 900px;
-    width : 1200px;
+    width : 1300px;
     height : 900px;
     background-color :white;
     padding : 50px 50px;
