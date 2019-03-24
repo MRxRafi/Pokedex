@@ -4,6 +4,9 @@ var gen = 1
 var ord = 1
 var leg = 0
 
+//Aqui guardamos los pokemon resultantes
+var result;
+
 // Hides or shows the content of the display
 function bot_func(id_elem) {
 	document.getElementById(id_elem).classList.toggle("show");
@@ -33,7 +36,6 @@ window.onclick = function(e) {
 // Search Button
 
 function search() {
-	console.log('search clicked!')
 	queryWS(type, gen, ord, leg);
 }
 
@@ -80,11 +82,35 @@ function updateCriterios(e, texo) {
 	console.log(type + " " + gen + " " + ord)
 }
 
-function displayResult(objs) {
-	var text = ""
-	objs.forEach(function(element, index) {
-		text += element.name + "\n"
-
+function displayResult() {
+	resultDiv = document.getElementById("result");
+	while (resultDiv.firstChild) {
+		resultDiv.removeChild(resultDiv.firstChild);
+	}
+	result.forEach(function(element, index) {
+		var node = document.createElement("LI")     
+		var textnode = document.createTextNode(element.name)
+		node.appendChild(textnode)
+		node.id = index
+		node.onclick = function(){showDetails(this.id)}
+		document.getElementById("result").appendChild(node)
 	})
-	document.getElementById("result").innerHTML = text
+	 
+}
+function showDetails(idx){
+	descriptionDiv = document.getElementById("description")
+	
+	while (descriptionDiv.firstChild) {
+		descriptionDiv.removeChild(descriptionDiv.firstChild)
+	}
+	//var textnode = document.createTextNode(result[idx].name)
+	//descriptionDiv.appendChild(textnode)
+	
+	Object.getOwnPropertyNames(result[idx]).forEach(function(key){
+		var textnode = document.createTextNode(key + ": " + result[idx][key])
+		var brnode = document.createElement("BR");
+		descriptionDiv.appendChild(textnode)
+		descriptionDiv.appendChild(brnode)
+	})
+	
 }

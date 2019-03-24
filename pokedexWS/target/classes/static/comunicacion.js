@@ -32,9 +32,8 @@ function openWSConnection(){
 	    	case "RESULT":
 	    		//recibimos los pokemon en forma de json (String)
 	    		pokemonJSON = msg.result;
-	    		console.log(pokemonJSON);
-	    		var pokemonJSobj = JSON.parse(pokemonJSON);
-	    		displayResult(pokemonJSobj);
+	    		result = JSON.parse(pokemonJSON);
+	    		displayResult();
 	    		break;
 	    	case "CONEX_CERR":
 	        	//Cerrar Conexión
@@ -76,7 +75,6 @@ function queryWS(type1, gen, ord, leg){
 	connection.data.ord =ord
 	connection.data.leg = leg
 	connection.send(JSON.stringify(connection.data));
-	console.log('query sent!')
 }
 
 
