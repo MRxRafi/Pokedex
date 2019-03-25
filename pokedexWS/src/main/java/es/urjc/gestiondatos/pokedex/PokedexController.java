@@ -41,6 +41,7 @@ public class PokedexController {
 		query.put("$and", obj);
 
 		FindIterable<Document> cursor = collection.find(query);
+		/*
 		String result = "[";
 	    List<Document> listDoc = new ArrayList<>();
 
@@ -49,8 +50,9 @@ public class PokedexController {
 	    }
 	    result = result.replace(result.substring(result.length()-1), "");
 	    result += "]";
+	    */
 	    
-		return JSON.serialize(listDoc);
+		return JSON.serialize(cursor);
 	}
 	
 	public void closeMongoSession() {
