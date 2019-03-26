@@ -30,6 +30,12 @@ window.onclick = function(e) {
 		//console.log(e.target)
 		updateCriterios(e.target.parentNode, texto)
 	}
+	
+	if(e.target.name === "legendario"){
+		if(e.target.checked === true){
+			leg = 1;
+		} else { leg = 0; }
+	}
 
 }
 

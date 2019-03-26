@@ -134,7 +134,7 @@ public class PokedexController {
 		case "Volador":
 			return "flying";
 		case "Lucha":
-			return "fight";
+			return "fighting";
 		case "Fantasma":
 			return "ghost";
 		case "Dragon":
