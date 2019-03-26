@@ -59,6 +59,9 @@ function updateCriterios(e, texto) {
 		break
 	case "generaciondrop":
 		switch(texto){
+		case "Todas":
+			gen = 0;
+			break;
 		case "1ª generación":
 			gen = 1
 			break
