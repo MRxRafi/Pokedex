@@ -4,3 +4,5 @@
 2. Que se pueda filtrar por legendario
 3. Eliminar pokemon seleccionado
 4. Crear y guardar nuevo pokemon(?)
+5. Mostrar imagen del pokemon seleccionado
+6. Iluminar la bombilla cuando pulsas algun botón
