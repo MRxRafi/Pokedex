@@ -27,8 +27,8 @@ window.onclick = function(e) {
 		var texto = e.target.innerText;
 		e.path[2].childNodes[1].firstChild.data = texto;
 		console.log(texto)
-		console.log(e.target)
-		updateCriterios(e, texto)
+		//console.log(e.target)
+		updateCriterios(e.target.parentNode, texto)
 	}
 
 }
@@ -39,13 +39,13 @@ function search() {
 	queryWS(type, gen, ord, leg);
 }
 
-function updateCriterios(e, texo) {
+function updateCriterios(e, texto) {
 	console.log(e.id)
 	switch (e.id) {
-	case "tipo":
+	case "tipodrop":
 		type = texto
 		break
-	case "ordenar":
+	case "ordenardrop":
 		switch (texto) {
 		case "Ascendente":
 			ord = 1
@@ -57,7 +57,7 @@ function updateCriterios(e, texo) {
 			ord = 0
 		}
 		break
-	case "generacion":
+	case "generaciondrop":
 		switch(texto){
 		case "1ª generación":
 			gen = 1

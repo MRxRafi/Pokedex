@@ -25,7 +25,6 @@ function openWSConnection(){
 
 	    switch (msg.type) {
 	    	case "CONEX_ESTAB":
-	    		connection.data.pokedexXML = msg.pokedexXML;
 	    		document.getElementById("uname").innerHTML = "Nombre de usuario: " + msg.pokedexXML.usuario;
 	            document.getElementById("n_serie").innerHTML = "Pokedex numero: " + msg.pokedexXML.num_serie;
 	            break;

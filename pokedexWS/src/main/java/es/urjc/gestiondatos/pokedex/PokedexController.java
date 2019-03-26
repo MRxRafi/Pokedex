@@ -32,6 +32,7 @@ public class PokedexController {
 	//Adri
 	@SuppressWarnings("deprecation")
 	public String query(String type1, int gen, int ord, int legendary) {
+		type1 = transformarTipo(type1);
 		
 		BasicDBObject query = new BasicDBObject();
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
@@ -69,6 +70,7 @@ public class PokedexController {
 		String collectionPath = System.getProperty("user.dir")+ separator+"src"+separator+"main"+separator
 				+"resources"+separator+"static"+separator;
 	    String xmlCatalog ="pokedex.xml";
+	    
 		try {
 			new CreateDB("pokedex").execute(context);
 			new Add(xmlCatalog, collectionPath).execute(context);
@@ -89,5 +91,48 @@ public class PokedexController {
 		context.close();
 		//Después, lo devolvemos
 		return pokXML;
+	}
+	
+	public String transformarTipo(String t) {
+		switch(t) {
+		case "Normal":
+			return "normal";
+		case "Fuego":
+			return "fire";
+		case "Agua":
+			return "water";
+		case "Planta":
+			return "grass";
+		case "Tierra":
+			return "ground";
+		case "Roca":
+			return "rock";
+		case "Electrico":
+			return "electric";
+		case "Veneno":
+			return "poison";
+		case "Bicho":
+			return "bug";
+		case "Volador":
+			return "flying";
+		case "Lucha":
+			return "fight";
+		case "Fantasma":
+			return "ghost";
+		case "Dragon":
+			return "dragon";
+		case "Psiquico":
+			return "psychic";
+		case "Hielo":
+			return "ice";
+		case "Hada":
+			return "fairy";
+		case "Acero":
+			return "steel";
+		case "Siniestro":
+			return "dark";
+		default:
+			return "FALLO";
+		}
 	}
 }
