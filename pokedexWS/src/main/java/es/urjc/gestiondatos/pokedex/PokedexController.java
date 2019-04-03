@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -70,6 +71,15 @@ public class PokedexController {
 		 */
 
 		return JSON.serialize(cursor);
+	}
+	
+	public void delete(String id) {
+		//BasicDBObject query = new BasicDBObject("_id", ObjectId("563237a41a4d68582c2509da"));
+		//List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		//obj.add(new BasicDBObject("id", id));
+		BasicDBObject del = new BasicDBObject("_id", new ObjectId(id));
+		System.out.println(del);
+		System.out.println(collection.deleteOne(del));
 	}
 
 	public void closeMongoSession() {

@@ -61,7 +61,11 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler {
 				System.out.println(json.toString());
 				session.sendMessage(m);
 				break;
-
+				
+			case "DELETE":
+				pokedexController.delete(node.get("id").asText());
+				json.put("type", "DELETE_COMPLETE");
+				break;
 			case "CREATE":
 				break;
 			}

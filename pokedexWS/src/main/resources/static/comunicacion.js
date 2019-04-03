@@ -32,6 +32,7 @@ function openWSConnection(){
 	    		//recibimos los pokemon en forma de json (String)
 	    		pokemonJSON = msg.result;
 	    		result = JSON.parse(pokemonJSON);
+	    		console.log(result)
 	    		displayResult();
 	    		break;
 	    	case "CONEX_CERR":
@@ -76,21 +77,15 @@ function queryWS(type1, gen, ord, leg){
 	connection.send(JSON.stringify(connection.data));
 }
 
-
-
-/*
-function updateStateWS(){
-	connection.data.type = 'UPDATE';
-	connection.data.actualPlayer = DLabyrinth.player;
-	connection.data.sendItems = sendItems;
-	connection.data.bala = DLabyrinth.bala;
-	connection.send(JSON.stringify(connection.data));
-	
-	
+function deleteWS(id){
+	connection.data.type = "DELETE"
+	connection.data.id = id
+	console.log(JSON.stringify(connection.data))
+	connection.send(JSON.stringify(connection.data))
 }
 
 function closeConnection(){
 	connection.data.type = "ENDING";
 	connection.data.actualPlayer = DLabyrinth.player;
 	connection.send(JSON.stringify(connection.data));
-}*/
+}

@@ -4,8 +4,11 @@ var gen = 1
 var ord = 1
 var leg = 0
 
-//Aqui guardamos los pokemon resultantes
+// Aqui guardamos los pokemon resultantes
 var result;
+
+// Pokemon seleccionado actualmente (undefined si no hay ninguno)
+var selected;
 
 // Hides or shows the content of the display
 function bot_func(id_elem) {
@@ -27,14 +30,16 @@ window.onclick = function(e) {
 		var texto = e.target.innerText;
 		e.path[2].childNodes[1].firstChild.data = texto;
 		console.log(texto)
-		//console.log(e.target)
+		// console.log(e.target)
 		updateCriterios(e.target.parentNode, texto)
 	}
-	
-	if(e.target.name === "legendario"){
-		if(e.target.checked === true){
+
+	if (e.target.name === "legendario") {
+		if (e.target.checked === true) {
 			leg = 1;
-		} else { leg = 0; }
+		} else {
+			leg = 0;
+		}
 	}
 
 }
@@ -43,6 +48,16 @@ window.onclick = function(e) {
 
 function search() {
 	queryWS(type, gen, ord, leg);
+}
+
+function deleteSelected() {
+	if (selected != undefined) {
+		deleteWS(selected._id.$oid)
+		var i = result.indexOf(selected)
+		result.splice(i, 1)
+		displayResult()
+		selected = undefined;
+	}
 }
 
 function updateCriterios(e, texto) {
@@ -64,7 +79,7 @@ function updateCriterios(e, texto) {
 		}
 		break
 	case "generaciondrop":
-		switch(texto){
+		switch (texto) {
 		case "Todas":
 			gen = 0;
 			break;
@@ -78,7 +93,7 @@ function updateCriterios(e, texto) {
 			gen = 3
 			break;
 		case "4ª generación":
-			gen =4
+			gen = 4
 			break
 		case "5ª generación":
 			gen = 5
@@ -97,29 +112,41 @@ function displayResult() {
 		resultDiv.removeChild(resultDiv.firstChild);
 	}
 	result.forEach(function(element, index) {
-		var node = document.createElement("LI")     
+		var node = document.createElement("LI")
 		var textnode = document.createTextNode(element.name)
 		node.appendChild(textnode)
 		node.id = index
-		node.onclick = function(){showDetails(this.id)}
+		node.onclick = function() {
+			showDetails(this.id)
+		}
 		document.getElementById("result").appendChild(node)
 	})
-	 
+
 }
-function showDetails(idx){
+function showDetails(idx) {
+
+	selected = result[idx]
+
 	descriptionDiv = document.getElementById("description")
-	
+
 	while (descriptionDiv.firstChild) {
 		descriptionDiv.removeChild(descriptionDiv.firstChild)
 	}
-	//var textnode = document.createTextNode(result[idx].name)
-	//descriptionDiv.appendChild(textnode)
-	
-	Object.getOwnPropertyNames(result[idx]).forEach(function(key){
-		var textnode = document.createTextNode(key + ": " + result[idx][key])
+	// var textnode = document.createTextNode(result[idx].name)
+	// descriptionDiv.appendChild(textnode)
+
+	Object.getOwnPropertyNames(result[idx]).forEach(function(key) {
+		var textnode;
+		/*
+		 * if (key == "_id") { var idObj = JSON.parse(result[idx][key]) textnode =
+		 * document.createTextNode(key +": " + idObj.$oid)
+		 * console.log(result[idx][key]) } else {
+		 */
+		textnode = document.createTextNode(key + ": " + result[idx][key])
+		// }
 		var brnode = document.createElement("BR");
 		descriptionDiv.appendChild(textnode)
 		descriptionDiv.appendChild(brnode)
 	})
-	
+
 }
