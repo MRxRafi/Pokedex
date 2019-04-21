@@ -44,5 +44,6 @@
 			<artifactId>basex</artifactId>
 			<version>7.6</version>
 		</dependency>
+		
 	</dependencies>
 </project>

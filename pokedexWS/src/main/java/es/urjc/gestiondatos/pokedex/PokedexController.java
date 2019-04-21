@@ -1,9 +1,24 @@
 package es.urjc.gestiondatos.pokedex;
 
+import static com.mongodb.client.model.Sorts.ascending;
+import static com.mongodb.client.model.Sorts.descending;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+
+import org.basex.core.Context;
+import org.basex.core.cmd.Add;
+import org.basex.core.cmd.CreateDB;
+import org.basex.core.cmd.XQuery;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -14,40 +29,118 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSInputFile;
 import com.mongodb.util.JSON;
 
-import org.basex.core.*;
-import org.basex.core.cmd.*;
-import static com.mongodb.client.model.Sorts.*;
-
+@SuppressWarnings("deprecation")
 public class PokedexController {
-	// Adri
 	MongoClient con = new MongoClient(new ServerAddress("localhost", 27017));
 	MongoDatabase db = con.getDatabase("pokedex");
 	MongoCollection<Document> collection = db.getCollection("pokemon");
 
-	// Rafa
+	GridFS gfsPhoto;
+
 	PokedexXML pokXML = new PokedexXML();
 
-	// Adri
-	@SuppressWarnings("deprecation")
+	
+	//Devuelve true si existe la coleccion con el nombre indicado
+	private boolean collectionExists(final String collectionName) {
+		MongoIterable<String> collectionNames = db.listCollectionNames();
+		for (final String name : collectionNames) {
+			if (name.equalsIgnoreCase(collectionName + ".files") || name.equalsIgnoreCase(collectionName + ".chunks")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//Inserta las imagenes en la base de datos si no lo ha hecho ya
+	public void insertImages() {
+		if (!collectionExists("photo")) {
+			gfsPhoto = new GridFS(con.getDB("pokedex"), "photo");
+			
+			File[] images = getImagesFromFolder(System.getProperty("user.dir") + "/src/main/resources/static/pokemon");
+			for (File file : images) {
+				GridFSInputFile gfsFile;
+				try {
+					gfsFile = gfsPhoto.createFile(file);
+					gfsFile.save();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		} else {
+			gfsPhoto = new GridFS(con.getDB("pokedex"), "photo");
+			System.out.println("Collection exists");
+		}
+	}
+	
+	//Devuelve las imágenes que coinciden con el indice
+	public void writeImages(String idx) {
+		String s = idx + ".png"; //"/.*" + idx + ".*/";
+		GridFSDBFile file = gfsPhoto.findOne(s);
+		
+		try {
+			
+			OutputStream out = new FileOutputStream(new File(System.getProperty("user.dir") + "/src/main/resources/static/selectedImage/" + s));
+			file.writeTo(out);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public String readImages() {
+		 try {
+		        BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + "/src/main/resources/static/selectedImage/1.png"));
+		        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		        ImageIO.write(image, "png", baos);
+		        byte[] byteArray = baos.toByteArray();
+		        
+		        //El array de bytes de la imagen hay que pasarlo a base 64 para que lo lea javascript correctamente
+		        String parsed = DatatypeConverter.printBase64Binary(byteArray);
+		        //System.out.println(parsed);
+		        
+		        return parsed;
+		    } catch (Exception e ){
+		        System.out.println("Error: "+e.getMessage());
+		    }
+		 return null;
+	}
+	
+	// Devuelve la ruta de todas las imágenes de los pokemon
+	public File[] getImagesFromFolder(String path) {
+		File folder = new File(path);
+		File[] files = folder.listFiles();
+		/*
+		 * String[] paths = new String[files.length]; for(int i = 0; i < files.length;
+		 * i++) { paths[i] = files[i].getPath(); }
+		 */
+		return files;
+	}
+
 	public String query(String type1, int gen, int ord, int legendary) {
 		type1 = transformarTipo(type1);
 
 		BasicDBObject query = new BasicDBObject();
 		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		if(!type1.equals("all")) {
-		obj.add(new BasicDBObject("type1", type1));
+		if (!type1.equals("all")) {
+			obj.add(new BasicDBObject("type1", type1));
 		}
-		if(gen != 0) {
-		obj.add(new BasicDBObject("generation", gen));
+		if (gen != 0) {
+			obj.add(new BasicDBObject("generation", gen));
 		}
 		obj.add(new BasicDBObject("is_legendary", legendary));
 		query.put("$and", obj);
-		
+
 		Bson sort;
 		FindIterable<Document> cursor;
-		
+
 		switch (ord) {
 		case 1:
 			sort = ascending("name");
@@ -72,11 +165,12 @@ public class PokedexController {
 
 		return JSON.serialize(cursor);
 	}
-	
+
 	public void delete(String id) {
-		//BasicDBObject query = new BasicDBObject("_id", ObjectId("563237a41a4d68582c2509da"));
-		//List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		//obj.add(new BasicDBObject("id", id));
+		// BasicDBObject query = new BasicDBObject("_id",
+		// ObjectId("563237a41a4d68582c2509da"));
+		// List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		// obj.add(new BasicDBObject("id", id));
 		BasicDBObject del = new BasicDBObject("_id", new ObjectId(id));
 		System.out.println(del);
 		System.out.println(collection.deleteOne(del));
@@ -86,7 +180,6 @@ public class PokedexController {
 		con.close();
 	}
 
-	// Rafa
 	// Cosas del XML
 	public PokedexXML getPokedexXML() {
 		// Leemos el XML y lo guardamos en pokXML

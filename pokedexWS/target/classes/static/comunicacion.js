@@ -35,6 +35,11 @@ function openWSConnection(){
 	    		console.log(result)
 	    		displayResult();
 	    		break;
+	    	case "PHOTO_RESULT":
+	    		var data = msg.data;
+	    		document.getElementById("ItemPreview").src = "data:image/png;base64," + data;
+	    		console.log(data)
+	    		break;
 	    	case "CONEX_CERR":
 	        	//Cerrar Conexión
 	        	connection.close();
@@ -74,6 +79,12 @@ function queryWS(type1, gen, ord, leg){
 	connection.data.gen = gen
 	connection.data.ord =ord
 	connection.data.leg = leg
+	connection.send(JSON.stringify(connection.data));
+}
+
+function queryPhotosWS(idx){
+	connection.data.type = "PHOTO";
+	connection.data.idx = idx;
 	connection.send(JSON.stringify(connection.data));
 }
 

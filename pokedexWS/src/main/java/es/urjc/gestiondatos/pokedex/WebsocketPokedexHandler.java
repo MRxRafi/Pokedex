@@ -49,7 +49,9 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler {
 				json.put("type", "CONEX_ESTAB");
 				json.putPOJO("pokedexXML", pokedexController.getPokedexXML());
 				session.sendMessage(new TextMessage(json.toString()));
+				pokedexController.insertImages();
 				break;
+				
 			case "QUERY":
 				String type = node.get("type1").asText();
 				int gen = node.get("gen").asInt();
@@ -58,14 +60,26 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler {
 				json.put("type", "RESULT");
 				json.put("result", pokedexController.query(type, gen, ord, leg));
 				TextMessage m = new TextMessage(json.toString());
-				System.out.println(json.toString());
 				session.sendMessage(m);
+				
+				break;
+				
+			case "PHOTO":
+				String idx = node.get("idx").asText();
+				json.put("type", "PHOTO_RESULT");
+				pokedexController.writeImages(idx);
+				json.put("data", pokedexController.readImages());
+				session.sendMessage(new TextMessage(json.toString()));
+				//byte[] byteArray = pokedexController.readImages();
+				//session.sendMessage(byteArray, 0, byteArray.length);
+				//System.out.println(byteArray);
 				break;
 				
 			case "DELETE":
 				pokedexController.delete(node.get("id").asText());
 				json.put("type", "DELETE_COMPLETE");
 				break;
+				
 			case "CREATE":
 				break;
 			}
