@@ -70,7 +70,7 @@ public class WebsocketPokedexHandler extends TextWebSocketHandler {
 				pokedexController.writeImages(idx);
 				//json.put("data", pokedexController.readImages().toString());
 				//session.sendMessage(new TextMessage(json.toString()));
-				byte[] byteArray = pokedexController.readImages();
+				byte[][] byteArray = pokedexController.readImages();
 				//session.sendMessage(byteArray, 0, byteArray.length);
 				System.out.println(byteArray);
 				break;

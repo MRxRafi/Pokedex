@@ -29,6 +29,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSInputFile;
 import com.mongodb.util.JSON;
 
 @SuppressWarnings("deprecation")
@@ -41,8 +42,7 @@ public class PokedexController {
 
 	PokedexXML pokXML = new PokedexXML();
 
-	
-	//Devuelve true si existe la coleccion con el nombre indicado
+	// Devuelve true si existe la coleccion con el nombre indicado
 	private boolean collectionExists(final String collectionName) {
 		MongoIterable<String> collectionNames = db.listCollectionNames();
 		for (final String name : collectionNames) {
@@ -53,9 +53,9 @@ public class PokedexController {
 		return false;
 	}
 
-	//Devuelve las imágenes que coinciden con el indice
+	// Devuelve las imágenes que coinciden con el indice
 	public void writeImages(String idx) {
-		String s = idx + ".png"; //"/.*" + idx + ".*/";
+		String s = idx + ".png"; // "/.*" + idx + ".*/";
 		BasicDBObject whereQuery = new BasicDBObject();
 		whereQuery.put("filename", s);
 		GridFSDBFile file = gfsPhoto.findOne(whereQuery);
@@ -66,23 +66,38 @@ public class PokedexController {
 		}
 	}
 
-	public byte[] readImages() {
-		 try {
-		        BufferedImage image = ImageIO.read(new File("/src/main/resources/static/selectedImage/1.png"));
-		        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		        ImageIO.write(image, "jpg", baos);
-		        byte[] byteArray = baos.toByteArray();
-		        return byteArray;
-		    } catch (Exception e ){
-		        System.out.println("Error: "+e.getMessage());
-		    }
-		 return null;
+	//Lee las imagenes de la carpeta selectedImage
+	public byte[][] readImages() {
+		try {
+			File[] images = getImagesFromFolder(
+					System.getProperty("user.dir") + "/src/main/resources/static/selectedImage");
+			BufferedImage[] imagesBuffer = new BufferedImage[images.length];
+			for (int i = 0; i < imagesBuffer.length; i++) {
+				imagesBuffer[i] = ImageIO.read(images[i]);
+			}
+
+			ByteArrayOutputStream[] baos = new ByteArrayOutputStream[imagesBuffer.length];
+			
+			for(int i = 0; i < baos.length; i++) {
+				ImageIO.write(imagesBuffer[i], "png", baos[i]);
+			}
+			
+			byte[][] byteArray = new byte[baos.length][];//baos.toByteArray();
+			
+			for(int i = 0; i < baos.length; i++) {
+				byteArray[i] = baos[i].toByteArray();
+			}
+			return byteArray;
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		return null;
 	}
-	
-	//Inserta las imagenes en la base de datos si no lo ha hecho ya
+
+	// Inserta las imagenes en la base de datos si no lo ha hecho ya
 	public void insertImages() {
 		if (!collectionExists("photo")) {
-			/*
+
 			File[] images = getImagesFromFolder(System.getProperty("user.dir") + "/src/main/resources/static/pokemon");
 			for (File file : images) {
 				GridFSInputFile gfsFile;
@@ -93,10 +108,11 @@ public class PokedexController {
 					e.printStackTrace();
 				}
 			}
-			*/
+
 			System.out.println("Collection exists");
 		}
 	}
+
 	// Devuelve la ruta de todas las imágenes de los pokemon
 	public File[] getImagesFromFolder(String path) {
 		File folder = new File(path);
@@ -127,34 +143,20 @@ public class PokedexController {
 
 		switch (ord) {
 		case 1:
-			sort = ascending("name");
-			cursor = collection.find(query).sort(sort);
-			System.out.println("ascending");
+			cursor = collection.find(query).sort(ascending("name"));
 			break;
 		case -1:
-			sort = descending("name");
-			cursor = collection.find(query).sort(sort);
-			System.out.println("Descending");
+			cursor = collection.find(query).sort(descending("name"));
 			break;
 		default:
 			cursor = collection.find(query);
 		}
 
-		/*
-		 * String result = "["; List<Document> listDoc = new ArrayList<>();
-		 * 
-		 * for (Document doc : cursor) { listDoc.add(doc); } result =
-		 * result.replace(result.substring(result.length()-1), ""); result += "]";
-		 */
-
 		return JSON.serialize(cursor);
 	}
 
 	public void delete(String id) {
-		// BasicDBObject query = new BasicDBObject("_id",
-		// ObjectId("563237a41a4d68582c2509da"));
-		// List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
-		// obj.add(new BasicDBObject("id", id));
+
 		BasicDBObject del = new BasicDBObject("_id", new ObjectId(id));
 		System.out.println(del);
 		System.out.println(collection.deleteOne(del));
