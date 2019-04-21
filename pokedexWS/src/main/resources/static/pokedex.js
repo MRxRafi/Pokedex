@@ -148,5 +148,9 @@ function showDetails(idx) {
 		descriptionDiv.appendChild(textnode)
 		descriptionDiv.appendChild(brnode)
 	})
+	
+	//display photo
+	
+	queryPhotosWS("1")
 
 }
