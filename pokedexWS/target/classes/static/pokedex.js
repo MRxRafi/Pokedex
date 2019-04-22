@@ -52,10 +52,12 @@ window.onclick = function(e) {
 // Search Button
 
 function search() {
+	lightBulb();
 	queryWS(type, gen, ord, leg);
 }
 
 function deleteSelected() {
+	lightBulb();
 	if (selected != undefined) {
 		deleteWS(selected._id.$oid)
 		var i = result.indexOf(selected)
@@ -129,7 +131,8 @@ function displayResult() {
 
 }
 function showDetails(idx) {
-
+	lightBulb();
+	
 	selected = result[idx]
 
 	descriptionDiv = document.getElementById("description")
@@ -159,6 +162,7 @@ function showDetails(idx) {
 }
 
 function nextImage(){
+	lightBulb();
 	if(imageIndex == images.length-1){
 		imageIndex = 0
 	}else{
@@ -166,4 +170,8 @@ function nextImage(){
 	}
 	document.getElementById("ItemPreview").src = "data:image/png;base64," + images[imageIndex];
 	
+}
+function lightBulb(){
+	document.getElementById("light").style.backgroundColor = "lightblue"
+	setTimeout(()=>{document.getElementById("light").style.backgroundColor = "#4438E6";}, 200);
 }

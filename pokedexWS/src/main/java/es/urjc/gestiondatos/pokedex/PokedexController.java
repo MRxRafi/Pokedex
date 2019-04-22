@@ -90,16 +90,16 @@ public class PokedexController {
 	public void writeImages(String idx) {
 		eraseImages();
 		DBObject clause1 = new BasicDBObject();
-		clause1.put("name", idx + "\".png\"");
+		clause1.put("filename", idx + ".png");
 		DBObject clause2 = new BasicDBObject();
-		clause2.put("name", "/.*" + idx + "-.*/");
+		clause2.put("filename", java.util.regex.Pattern.compile("^" + idx + "-"));
 		List<DBObject> or = new ArrayList<DBObject>();
 		or.add(clause1);
 		or.add(clause2);
 		DBObject query = new BasicDBObject("$or", or);
 		
 		String s = idx + ".png"; // "/.*" + idx + ".*/";
-		List<GridFSDBFile> files = gfsPhoto.find(s);
+		List<GridFSDBFile> files = gfsPhoto.find(query);
 		for (GridFSDBFile file : files) {
 			try {
 				System.out.println(file);
