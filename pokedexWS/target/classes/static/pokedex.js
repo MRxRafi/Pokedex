@@ -10,6 +10,11 @@ var result;
 // Pokemon seleccionado actualmente (undefined si no hay ninguno)
 var selected;
 
+//Imagen/es del pokemon seleccionado
+var images = [];
+//Indice de la imagen que se esta mostrando(si que hay alguna)
+var imageIndex = 0;
+
 // Hides or shows the content of the display
 function bot_func(id_elem) {
 	document.getElementById(id_elem).classList.toggle("show");
@@ -149,8 +154,16 @@ function showDetails(idx) {
 		descriptionDiv.appendChild(brnode)
 	})
 	
-	//display photo
-	
-	queryPhotosWS("1")
+	//search photo
+	queryPhotosWS(result[idx].pokedex_number)
+}
 
+function nextImage(){
+	if(imageIndex == images.length-1){
+		imageIndex = 0
+	}else{
+		imageIndex += 1
+	}
+	document.getElementById("ItemPreview").src = "data:image/png;base64," + images[imageIndex];
+	
 }

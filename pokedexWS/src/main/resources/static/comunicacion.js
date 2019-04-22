@@ -36,9 +36,16 @@ function openWSConnection(){
 	    		displayResult();
 	    		break;
 	    	case "PHOTO_RESULT":
-	    		var data = msg.data;
-	    		document.getElementById("ItemPreview").src = "data:image/png;base64," + data;
+	    		var data = JSON.parse(msg.data)
 	    		console.log(data)
+	    		images = [];
+	    		imageIndex = 0;
+	    		for(img in data){
+	    			//console.log(data[img])
+	    			images.push(data[img])
+	    		}
+	    		document.getElementById("ItemPreview").src = "data:image/png;base64," + images[imageIndex];
+	    		//console.log(data.image0)
 	    		break;
 	    	case "CONEX_CERR":
 	        	//Cerrar Conexión

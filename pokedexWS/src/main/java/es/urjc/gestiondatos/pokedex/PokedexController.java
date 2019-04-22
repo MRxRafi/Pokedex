@@ -23,7 +23,9 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
@@ -41,12 +43,11 @@ public class PokedexController {
 	MongoDatabase db = con.getDatabase("pokedex");
 	MongoCollection<Document> collection = db.getCollection("pokemon");
 
-	GridFS gfsPhoto;
+	GridFS gfsPhoto = new GridFS(con.getDB("pokedex"), "photo");
 
 	PokedexXML pokXML = new PokedexXML();
 
-	
-	//Devuelve true si existe la coleccion con el nombre indicado
+	// Devuelve true si existe la coleccion con el nombre indicado
 	private boolean collectionExists(final String collectionName) {
 		MongoIterable<String> collectionNames = db.listCollectionNames();
 		for (final String name : collectionNames) {
@@ -56,12 +57,11 @@ public class PokedexController {
 		}
 		return false;
 	}
-	
-	//Inserta las imagenes en la base de datos si no lo ha hecho ya
+
+	// Inserta las imagenes en la base de datos si no lo ha hecho ya
 	public void insertImages() {
 		if (!collectionExists("photo")) {
-			gfsPhoto = new GridFS(con.getDB("pokedex"), "photo");
-			
+
 			File[] images = getImagesFromFolder(System.getProperty("user.dir") + "/src/main/resources/static/pokemon");
 			for (File file : images) {
 				GridFSInputFile gfsFile;
@@ -72,47 +72,91 @@ public class PokedexController {
 					e.printStackTrace();
 				}
 			}
-			
+
 		} else {
-			gfsPhoto = new GridFS(con.getDB("pokedex"), "photo");
 			System.out.println("Collection exists");
 		}
 	}
-	
-	//Devuelve las imágenes que coinciden con el indice
-	public void writeImages(String idx) {
-		String s = idx + ".png"; //"/.*" + idx + ".*/";
-		GridFSDBFile file = gfsPhoto.findOne(s);
-		
-		try {
-			
-			OutputStream out = new FileOutputStream(new File(System.getProperty("user.dir") + "/src/main/resources/static/selectedImage/" + s));
-			file.writeTo(out);
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+
+	// borra las imagenes de la carpeta
+	private void eraseImages() {
+		File[] files = getImagesFromFolder(System.getProperty("user.dir") + "/src/main/resources/static/selectedImage");
+		for (File file : files) {
+			file.delete();
 		}
 	}
-	
-	
-	public String readImages() {
-		 try {
-		        BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + "/src/main/resources/static/selectedImage/1.png"));
-		        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		        ImageIO.write(image, "png", baos);
-		        byte[] byteArray = baos.toByteArray();
-		        
-		        //El array de bytes de la imagen hay que pasarlo a base 64 para que lo lea javascript correctamente
-		        String parsed = DatatypeConverter.printBase64Binary(byteArray);
-		        //System.out.println(parsed);
-		        
-		        return parsed;
-		    } catch (Exception e ){
-		        System.out.println("Error: "+e.getMessage());
-		    }
-		 return null;
+
+	// Busca las imágenes que coinciden con el indice y las escribe en la carpeta
+	public void writeImages(String idx) {
+		eraseImages();
+		DBObject clause1 = new BasicDBObject();
+		clause1.put("name", idx + "\".png\"");
+		DBObject clause2 = new BasicDBObject();
+		clause2.put("name", "/.*" + idx + "-.*/");
+		List<DBObject> or = new ArrayList<DBObject>();
+		or.add(clause1);
+		or.add(clause2);
+		DBObject query = new BasicDBObject("$or", or);
+		
+		String s = idx + ".png"; // "/.*" + idx + ".*/";
+		List<GridFSDBFile> files = gfsPhoto.find(s);
+		for (GridFSDBFile file : files) {
+			try {
+				System.out.println(file);
+				OutputStream out = new FileOutputStream(new File(System.getProperty("user.dir")
+						+ "/src/main/resources/static/selectedImage/" + file.getFilename()));
+				file.writeTo(out);
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
-	
+
+	public String readImages() {
+		try {
+			File[] images = getImagesFromFolder(
+					System.getProperty("user.dir") + "/src/main/resources/static/selectedImage");
+			BufferedImage[] imagesBuffer = new BufferedImage[images.length];
+			for (int i = 0; i < imagesBuffer.length; i++) {
+				imagesBuffer[i] = ImageIO.read(images[i]);
+			}
+
+			ByteArrayOutputStream[] baos = new ByteArrayOutputStream[imagesBuffer.length];
+
+			for (int i = 0; i < baos.length; i++) {
+				baos[i] = new ByteArrayOutputStream();
+				ImageIO.write(imagesBuffer[i], "png", baos[i]);
+			}
+
+			byte[][] byteArray = new byte[baos.length][];
+
+			for (int i = 0; i < byteArray.length; i++) {
+				byteArray[i] = baos[i].toByteArray();
+			}
+
+			// El array de bytes de la imagen hay que pasarlo a base 64 para que lo lea
+			// javascript correctamente
+
+			String json = "{";
+
+			for (int i = 0; i < byteArray.length; i++) {
+				json += "\"image" + i + "\":\"";
+				json += DatatypeConverter.printBase64Binary(byteArray[i]) + "\"";
+				if (i < byteArray.length - 1)
+					json += ",";
+			}
+
+			json += "}";
+
+			return json;
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		return null;
+	}
+
 	// Devuelve la ruta de todas las imágenes de los pokemon
 	public File[] getImagesFromFolder(String path) {
 		File folder = new File(path);

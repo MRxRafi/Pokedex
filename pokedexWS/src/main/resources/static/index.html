@@ -1,99 +1,89 @@
 <!doctype html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<script type = "text/javascript" src = "comunicacion.js"></script>
-    <script type = "text/javascript" src = "pokedex.js"></script>
-    <script type = "text/javascript" src = "jquery-3.3.1.min.js"></script>
-    <link rel = "stylesheet" href = "pokedex.css">
-    <title>Pokedex</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="comunicacion.js"></script>
+<script type="text/javascript" src="pokedex.js"></script>
+<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="pokedex.css">
+<title>Pokedex</title>
 </head>
 <body onload="openWSConnection()">
-    <div id = "pokedex">
-        <span class="dot"></span>
-        <div id = "leftside">           
+	<div id="pokedex">
+		<span class="dot"></span>
+		<div id="leftside">
+			<div id = "buttonAndScreen">
+				<div id="screen">
+					<img id="ItemPreview" src="" />
+				</div>
+				<button id = "nextImagebtn" class = "bluebtn" onclick = "nextImage()">next</button>
+			</div>
 
-            <div id = "screen">
-            	<img id="ItemPreview" src="" />
-            </div>
+			<div id="description"></div>
 
-            <div id = "description">
-            </div>
+		</div>
 
-        </div>
+		<div id="rightside">
+			<div id="username">
+				<p id="uname"></p>
+			</div>
+			<div class="options1">
+				<div class="dropdown">
+					<button class="dropbtn" onclick="bot_func('tipodrop')" id="tipo">
+						Tipo
+						<!--<i class="fa fa-caret-down"></i> -->
+					</button>
+					<div class="dropdown-content" id="tipodrop">
+						<a href="#">Todos</a> <a href="#">Normal</a> <a href="#">Fuego</a>
+						<a href="#">Agua</a> <a href="#">Planta</a> <a href="#">Tierra</a>
+						<a href="#">Roca</a> <a href="#">Electrico</a> <a href="#">Veneno</a>
+						<a href="#">Bicho</a> <a href="#">Volador</a> <a href="#">Lucha</a>
+						<a href="#">Fantasma</a> <a href="#">Siniestro</a> <a href="#">Dragon</a>
+						<a href="#">Psiquico</a> <a href="#">Hielo</a> <a href="#">Hada</a>
+						<a href="#">Acero</a>
+					</div>
+				</div>
 
-        <div id="rightside">
-            <div id="username">
-                    <p id="uname"></p>
-            </div>
-            <div class="options1">
-                <div class="dropdown">
-                    <button class="dropbtn" onclick="bot_func('tipodrop')" id="tipo"> Tipo 
-                        <!--<i class="fa fa-caret-down"></i> -->
-                    </button>
-                    <div class="dropdown-content" id = "tipodrop">
-                        <a href="#">Todos</a>
-                        <a href="#">Normal</a>
-                        <a href="#">Fuego</a>
-                        <a href="#">Agua</a>
-                        <a href="#">Planta</a>
-                        <a href="#">Tierra</a>
-                        <a href="#">Roca</a>
-                        <a href="#">Electrico</a>
-                        <a href="#">Veneno</a>
-                        <a href="#">Bicho</a>
-                        <a href="#">Volador</a>
-                        <a href="#">Lucha</a>
-                        <a href="#">Fantasma</a>
-                        <a href="#">Siniestro</a>
-                        <a href="#">Dragon</a>
-                        <a href="#">Psiquico</a>
-                        <a href="#">Hielo</a>
-                        <a href="#">Hada</a>
-                        <a href="#">Acero</a>
-                    </div>
-                </div>
+				<div class="dropdown">
+					<button class="dropbtn" onclick="bot_func('generaciondrop')"
+						id="generacion">
+						Generacion <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-content" id="generaciondrop">
+						<a href="#">Todas</a> <a href="#">1ª generación</a> <a href="#">2ª
+							generación</a> <a href="#">3ª generación</a> <a href="#">4ª
+							generación</a> <a href="#">5ª generación</a> <a href="#">6ª
+							generación</a>
+					</div>
+				</div>
 
-                <div class="dropdown">
-                    <button class="dropbtn" onclick="bot_func('generaciondrop')" id="generacion"> Generacion 
-                        <i class="fa fa-caret-down"></i></button>
-                    <div class="dropdown-content" id ="generaciondrop" >
-                        <a href="#">Todas</a>
-                        <a href="#">1ª generación</a>
-                        <a href="#">2ª generación</a>
-                        <a href="#">3ª generación</a>
-                        <a href="#">4ª generación</a>
-                        <a href="#">5ª generación</a>
-                        <a href="#">6ª generación</a>
-                    </div>
-                </div>
+				<div class="dropdown">
+					<button class="dropbtn" onclick="bot_func('ordenardrop')"
+						id="ordenar">
+						Ordenar <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-content" id=ordenardrop>
+						<a href="#">Ninguno</a> <a href="#">Ascendente</a> <a href="#">Descendente</a>
+					</div>
+				</div>
+				<div id="legendario">
+					<input type="checkbox" name="legendario" value="isLegendario">
+					Legendario<br>
+				</div>
+			</div>
+			<div id="options">
 
-                <div class="dropdown">
-                    <button class="dropbtn" onclick="bot_func('ordenardrop')" id="ordenar"> Ordenar
-                        <i class="fa fa-caret-down"></i></button>
-                    <div class="dropdown-content" id = ordenardrop>
-                        <a href="#">Ninguno</a>
-                        <a href="#">Ascendente</a>
-                        <a href="#">Descendente</a>
-                    </div>
-                </div>
-                <div id = "legendario">
-                    <input type="checkbox" name="legendario" value="isLegendario"> Legendario<br>
-                </div>
-            </div>
-            <div id = "options">
+				<button type="button" class="bluebtn" id="search" onclick="search()">Search</button>
+			</div>
 
-                <button type = "button" class = "bluebtn" id = "search" onclick = "search()">Search</button>
-                </div>
+			<div id="result"></div>
 
-                <div id = "result">
-                </div>
+			<button type="button" class="greenbtn" id="delete"
+				onclick="deleteSelected()">Delete Selected</button>
+			<p id="n_serie"></p>
+		</div>
+	</div>
 
-                <button type = "button" class = "greenbtn" id = "delete" onclick = "deleteSelected()">Delete Selected</button>
-                <p id="n_serie"></p>
-            </div>
-        </div>
-
-    </div>
+	</div>
 </body>
 </html>
