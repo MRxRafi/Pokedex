@@ -43,7 +43,7 @@ public class PokedexController {
 	MongoDatabase db = con.getDatabase("pokedex");
 	MongoCollection<Document> collection = db.getCollection("pokemon");
 
-	GridFS gfsPhoto = new GridFS(con.getDB("pokedex"), "photo");
+	GridFS gfsPhoto;
 
 	PokedexXML pokXML = new PokedexXML();
 
@@ -61,7 +61,7 @@ public class PokedexController {
 	// Inserta las imagenes en la base de datos si no lo ha hecho ya
 	public void insertImages() {
 		if (!collectionExists("photo")) {
-
+			gfsPhoto = new GridFS(con.getDB("pokedex"), "photo");
 			File[] images = getImagesFromFolder(System.getProperty("user.dir") + "/src/main/resources/static/pokemon");
 			for (File file : images) {
 				GridFSInputFile gfsFile;
@@ -74,6 +74,7 @@ public class PokedexController {
 			}
 
 		} else {
+			gfsPhoto = new GridFS(con.getDB("pokedex"), "photo");
 			System.out.println("Collection exists");
 		}
 	}
